@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoboTech - Future Navigation</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2A6FFF;
+            --secondary: #00C9A7;
+            --accent: #FF4D79;
+            --text: #2D3748;
+            --background: #F8FAFF;
+            --glass: rgba(255, 255, 255, 0.9);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            min-height: 100vh;
+        }
+
+        /* Cyber Border Animation */
+        @keyframes cyber-border {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .navbar {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1400px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 1.2rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+
+        .navbar::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: cyber-border 4s infinite linear;
+        }
+
+        .nav-logo img {
+            height: 50px;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-item {
+            position: relative;
+            padding: 0.8rem 1.2rem;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-item:hover::before {
+            width: 100%;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: calc(100% + 1rem);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 1rem 0;
+            min-width: 220px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 2rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(42, 111, 255, 0.05);
+            transform: translateX(8px);
+            color: var(--primary);
+        }
+
+        .dropdown-item i {
+            width: 25px;
+            color: var(--secondary);
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        @media (max-width: 1024px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .navbar {
+                width: 95%;
+                padding: 1rem 1.5rem;
+            }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100vh;
+            background: var(--glass);
+            backdrop-filter: blur(30px);
+            padding: 2rem;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 9999;
+            box-shadow: -8px 0 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .close-menu {
+            font-size: 1.5rem;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .mobile-nav-item {
+            display: block;
+            padding: 1rem;
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-item:hover {
+            background: rgba(42, 111, 255, 0.05);
+            color: var(--primary);
+        }
+
+        .mobile-dropdown {
+            padding-left: 1.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .mobile-dropdown-item {
+            padding: 0.8rem;
+            font-size: 0.9em;
+            color: var(--text);
+            text-decoration: none;
+            display: block;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-logo">
+            <img src="images/logo.png" alt="RoboTech">
+        </div>
+
+        <div class="nav-links">
+            <a href="#" class="nav-item"><i class="fas fa-home"></i> Home</a>
+            
+            <div class="dropdown">
+                <a href="#" class="nav-item"><i class="fas fa-robot"></i> Products</a>
+                <div class="dropdown-content">
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-people-arrows"></i>
+                        Cobots
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-industry"></i>
+                        Industrial Robots
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-grip-lines"></i>
+                        Electrical Grippers
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-hand-paper"></i>
+                        Anthropomorphic Grippers
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-book-open"></i>
+                        Educational Robots
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-code"></i>
+                        Simulation Software
+                    </a>
+                </div>
+            </div>
+
+            <a href="#" class="nav-item"><i class="fas fa-chalkboard-teacher"></i> Training</a>
+            <a href="#" class="nav-item"><i class="fas fa-download"></i> Downloads</a>
+            <a href="#" class="nav-item"><i class="fas fa-phone-alt"></i> Contact Us</a>
+            <a href="#" class="nav-item"><i class="fas fa-blog"></i> Blog</a>
+        </div>
+
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-header">
+            <img src="https://cdn-icons-png.flaticon.com/512/2593/2593308.png" alt="RoboTech" width="120">
+            <div class="close-menu" onclick="toggleMenu()">×</div>
+        </div>
+        <a href="#" class="mobile-nav-item"><i class="fas fa-home"></i> Home</a>
+        
+        <div class="mobile-nav-item"><i class="fas fa-robot"></i> Products</div>
+        <div class="mobile-dropdown">
+            <a href="#" class="mobile-dropdown-item">Cobots</a>
+            <a href="#" class="mobile-dropdown-item">Industrial Robots</a>
+            <a href="#" class="mobile-dropdown-item">Electrical Grippers</a>
+            <a href="#" class="mobile-dropdown-item">Anthropomorphic Grippers</a>
+            <a href="#" class="mobile-dropdown-item">Educational Robots</a>
+            <a href="#" class="mobile-dropdown-item">Simulation Software</a>
+        </div>
+
+        <a href="#" class="mobile-nav-item"><i class="fas fa-chalkboard-teacher"></i> Training</a>
+        <a href="#" class="mobile-nav-item"><i class="fas fa-download"></i> Downloads</a>
+        <a href="#" class="mobile-nav-item"><i class="fas fa-phone-alt"></i> Contact Us</a>
+        <a href="#" class="mobile-nav-item"><i class="fas fa-blog"></i> Blog</a>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById("mobileMenu");
+            menu.classList.toggle("active");
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById("mobileMenu");
+            const hamburger = document.querySelector('.hamburger');
+            if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
+                menu.classList.remove("active");
+            }
+        });
+
+        // Dynamic background effect
+        document.addEventListener('DOMContentLoaded', () => {
+            const navbar = document.querySelector('.navbar');
+            
+            document.addEventListener('mousemove', (e) => {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                navbar.style.transform = `translateX(-50%) rotateX(${y * 5}deg) rotateY(${x * 5}deg)`;
+            });
+
+            navbar.addEventListener('mouseleave', () => {
+                navbar.style.transform = 'translateX(-50%) rotateX(0) rotateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autobots - Loading</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a1a;
+            font-family: 'Orbitron', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            color: #00f7ff;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            position: relative;
+        }
+
+        .logo-container {
+            position: relative;
+            margin-bottom: 4rem;
+        }
+
+        .autobot-logo {
+            width: 550px; /* Adjust size as needed */
+            height: 150px; /* Adjust size as needed */
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px rgba(0, 247, 255, 0.5));
+        }
+
+        .loading-text {
+            font-size: 2.5rem;
+            letter-spacing: 4px;
+            margin-bottom: 2rem;
+            position: relative;
+            text-shadow: 0 0 10px #00f7ff;
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00f7ff, #0066ff);
+            width: 0%; /* Start at 0% */
+            border-radius: 2px;
+            transition: width 0.1s linear; /* Smooth transition for width changes */
+        }
+
+        .circuit-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: 
+                linear-gradient(to right, #00f7ff 1px, transparent 1px),
+                linear-gradient(to bottom, #00f7ff 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom,
+                transparent 50%,
+                rgba(0, 247, 255, 0.05) 51%,
+                transparent 52%);
+            animation: scan 4s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s infinite steps(4);
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60% { content: '...'; }
+            80%, 100% { content: ''; }
+        }
+    </style>
+</head>
+<body>
+    <div class="circuit-pattern"></div>
+    <div class="scan-line"></div>
+    <div class="container">
+        <div class="logo-container">
+            <!-- Replace the SVG with a PNG image -->
+            <img src="images/logo.png" alt="Autobots Logo" class="autobot-logo">
+        </div>
+        <h1 class="loading-text">INITIALIZING SYSTEMS<span class="loading-dots"></span></h1>
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+    </div>
+
+    <script>
+        // Progress bar animation
+        const progressFill = document.querySelector('.progress-fill');
+        const duration = 3000; // 3 seconds
+        const interval = 10; // Update every 10ms for smooth animation
+        const increment = (interval / duration) * 100; // Calculate width increment per interval
+
+        let width = 0;
+
+        const progressInterval = setInterval(() => {
+            width += increment;
+            progressFill.style.width = width + '%';
+
+            // Stop the interval when the progress bar reaches 100%
+            if (width >= 100) {
+                clearInterval(progressInterval);
+                // Redirect to login.html after the progress bar is filled
+                window.location.href = 'home.html';
+            }
+        }, interval);
+    </script>
+</body>
+</html>
