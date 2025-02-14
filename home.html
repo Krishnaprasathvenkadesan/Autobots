@@ -167,6 +167,14 @@
             font-size: 1.5rem;
             color: var(--text);
             cursor: pointer;
+            padding: 8px;
+            z-index: 1002; /* Ensure it's above other elements */
+            user-select: none; /* Prevent text selection */
+            -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+        }
+
+        .hamburger.active {
+            color: var(--primary);
         }
 
         @media (max-width: 1024px) {
@@ -176,12 +184,26 @@
 
             .hamburger {
                 display: block;
+                position: relative;
             }
 
             .navbar {
-                width: 95%;
-                padding: 1rem 1.5rem;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                transform: none;
+                border-radius: 0;
             }
+            @media (max-width: 1024px) {
+            .navbar {
+                transform: none;
+                left: 0;
+                width: 100%;
+                border-radius: 0;
+                top: 0;
+            }
+}
         }
 
         /* Mobile Menu */
@@ -244,6 +266,21 @@
             display: block;
             border-radius: 6px;
         }
+        /* Mobile dropdown activation */
+    .mobile-dropdown {
+        display: none;
+    }
+
+    .mobile-dropdown.active {
+        display: block;
+    }
+
+    /* Contact us icon mirroring */
+    .nav-item .fa-phone-alt,
+    .mobile-nav-item .fa-phone-alt {
+        transform: scaleX(-1);
+        display: inline-block;
+    }
     </style>
 </head>
 <body>
@@ -290,15 +327,14 @@
             <a href="#" class="nav-item"><i class="fas fa-phone-alt"></i> Contact Us</a>
             <a href="#" class="nav-item"><i class="fas fa-blog"></i> Blog</a>
         </div>
-
-        <div class="hamburger" onclick="toggleMenu()">☰</div>
+        <div class="hamburger">☰</div>
     </nav>
 
     <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobileMenu">
         <div class="mobile-header">
             <img src="https://cdn-icons-png.flaticon.com/512/2593/2593308.png" alt="RoboTech" width="120">
-            <div class="close-menu" onclick="toggleMenu()">×</div>
+            <div class="close-menu">×</div>
         </div>
         <a href="#" class="mobile-nav-item"><i class="fas fa-home"></i> Home</a>
         
@@ -319,34 +355,47 @@
     </div>
 
     <script>
-        function toggleMenu() {
-            const menu = document.getElementById("mobileMenu");
-            menu.classList.toggle("active");
-        }
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const menu = document.getElementById("mobileMenu");
-            const hamburger = document.querySelector('.hamburger');
-            if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
-                menu.classList.remove("active");
-            }
-        });
-
-        // Dynamic background effect
         document.addEventListener('DOMContentLoaded', () => {
-            const navbar = document.querySelector('.navbar');
-            
-            document.addEventListener('mousemove', (e) => {
-                const x = e.clientX / window.innerWidth;
-                const y = e.clientY / window.innerHeight;
-                navbar.style.transform = `translateX(-50%) rotateX(${y * 5}deg) rotateY(${x * 5}deg)`;
-            });
+    // Get elements
+    const hamburgerBtn = document.querySelector('.hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const closeMenuBtn = document.querySelector('.close-menu');
 
-            navbar.addEventListener('mouseleave', () => {
-                navbar.style.transform = 'translateX(-50%) rotateX(0) rotateY(0)';
+    // Debug check - add this temporarily to verify elements are found
+    console.log('Hamburger:', hamburgerBtn);
+    console.log('Mobile Menu:', mobileMenu);
+    console.log('Close Button:', closeMenuBtn);
+
+    // Hamburger click event
+    hamburgerBtn.addEventListener('click', () => {
+        console.log('Hamburger clicked'); // Debug log
+        mobileMenu.classList.toggle('active');
+    });
+
+    // Close button click event
+    closeMenuBtn.addEventListener('click', () => {
+        console.log('Close button clicked'); // Debug log
+        mobileMenu.classList.remove('active');
+    });
+
+    // Mobile dropdowns
+    const dropdownTriggers = document.querySelectorAll('.mobile-nav-item');
+    dropdownTriggers.forEach(trigger => {
+        if (trigger.nextElementSibling?.classList.contains('mobile-dropdown')) {
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                trigger.nextElementSibling.classList.toggle('active');
             });
-        });
+        }
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!mobileMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+            mobileMenu.classList.remove('active');
+        }
+    });
+});
     </script>
 </body>
 </html>
