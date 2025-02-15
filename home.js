@@ -41,3 +41,61 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+//Hero carousel
+
+const track = document.querySelector('.carousel-track');
+        const items = document.querySelectorAll('.carousel-item');
+        const dots = document.querySelectorAll('.nav-dot');
+        const prevArrow = document.querySelector('.arrow-prev');
+        const nextArrow = document.querySelector('.arrow-next');
+        let currentIndex = 0;
+        let autoPlay = true;
+        let interval = setInterval(nextSlide, 5000);
+
+        function updateCarousel() {
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            
+            items.forEach(item => item.classList.remove('active'));
+            items[currentIndex].classList.add('active');
+            
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentIndex].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % items.length;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + items.length) % items.length;
+            updateCarousel();
+        }
+
+        prevArrow.addEventListener('click', () => {
+            prevSlide();
+            resetAutoplay();
+        });
+
+        nextArrow.addEventListener('click', () => {
+            nextSlide();
+            resetAutoplay();
+        });
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentIndex = index;
+                updateCarousel();
+                resetAutoplay();
+            });
+        });
+
+        function resetAutoplay() {
+            clearInterval(interval);
+            interval = setInterval(nextSlide, 5000);
+        }
+
+        // Pause on hover
+        track.parentElement.addEventListener('mouseenter', () => clearInterval(interval));
+        track.parentElement.addEventListener('mouseleave', resetAutoplay);
