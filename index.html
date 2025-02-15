@@ -13,11 +13,11 @@
         }
 
         body {
-            background: #0a0a1a;
+            background: #f4f4f4; /* Light background */
             font-family: 'Orbitron', sans-serif;
             height: 100vh;
             overflow: hidden;
-            color: #00f7ff;
+            color: #333; /* Dark text for contrast */
         }
 
         .container {
@@ -38,7 +38,7 @@
             width: 550px; /* Adjust size as needed */
             height: 150px; /* Adjust size as needed */
             animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 15px rgba(0, 247, 255, 0.5));
+            filter: drop-shadow(0 0 15px rgba(0, 123, 255, 0.5)); /* Blue shadow */
         }
 
         .loading-text {
@@ -46,13 +46,13 @@
             letter-spacing: 4px;
             margin-bottom: 2rem;
             position: relative;
-            text-shadow: 0 0 10px #00f7ff;
+            text-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* Blue shadow */
         }
 
         .progress-bar {
             width: 300px;
             height: 4px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.1); /* Light gray background */
             border-radius: 2px;
             overflow: hidden;
             position: relative;
@@ -60,7 +60,7 @@
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #00f7ff, #0066ff);
+            background: linear-gradient(90deg, #007bff, #00bfff); /* Blue gradient */
             width: 0%; /* Start at 0% */
             border-radius: 2px;
             transition: width 0.1s linear; /* Smooth transition for width changes */
@@ -72,8 +72,8 @@
             height: 100%;
             opacity: 0.1;
             background-image: 
-                linear-gradient(to right, #00f7ff 1px, transparent 1px),
-                linear-gradient(to bottom, #00f7ff 1px, transparent 1px);
+                linear-gradient(to right, #007bff 1px, transparent 1px),
+                linear-gradient(to bottom, #007bff 1px, transparent 1px);
             background-size: 20px 20px;
         }
 
@@ -88,7 +88,7 @@
             height: 100%;
             background: linear-gradient(to bottom,
                 transparent 50%,
-                rgba(0, 247, 255, 0.05) 51%,
+                rgba(0, 123, 255, 0.05) 51%, /* Light blue scan line */
                 transparent 52%);
             animation: scan 4s linear infinite;
         }
