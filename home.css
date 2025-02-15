@@ -145,9 +145,7 @@ body {
 }
 
 .dropdown-item:hover {
-    background: rgba(42, 111, 255, 0.05);
-    transform: translateX(8px);
-    color: var(--primary);
+    transform: translateX(5px);
 }
 
 .dropdown-item i {
