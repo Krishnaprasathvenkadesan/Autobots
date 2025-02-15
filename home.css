@@ -145,7 +145,7 @@ body {
 }
 
 .dropdown-item:hover {
-    transform: translateX(5px);
+    transform: translateX(7px);
 }
 
 .dropdown-item i {

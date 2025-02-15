@@ -1,4 +1,4 @@
-//Nav-Bar JS
+//Nav-Bar 
 
 document.addEventListener('DOMContentLoaded', () => {
     // Get elements
